@@ -31,6 +31,7 @@
 #include <stdarg.h>
 
 void _libtrace_assert_fail(const char *message, ...) {
+#if 0
 	char *msg;
 	va_list ap;
 
@@ -40,4 +41,5 @@ void _libtrace_assert_fail(const char *message, ...) {
 
 	CRSetCrashLogMessage(msg);
 	abort_with_reason(OS_REASON_LIBSYSTEM, 1, msg, OS_REASON_FLAG_GENERATE_CRASH_REPORT);
+#endif
 }
