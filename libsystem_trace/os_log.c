@@ -28,13 +28,12 @@
 #include "os_log_s.h"
 #include "libtrace_assert.h"
 #include <asl.h>
+#include <os/log.h>
+#import <os/object_private.h>
 
-// FIXME: For some reason, this isn't showing up in a C file properly.
-#define OS_OBJECT_OBJC_CLASS_DECL(name) \
-	extern void *OS_OBJECT_CLASS_SYMBOL(name) \
-	asm(OS_OBJC_CLASS_RAW_SYMBOL_NAME(OS_OBJECT_CLASS(name)))
-#define OS_OBJECT_CLASS_SYMBOL(name) OS_##name##_class
-#define OS_OBJC_CLASS_RAW_SYMBOL_NAME(name) "_OBJC_CLASS_$_" OS_STRINGIFY(name)
+#ifdef os_log_create
+#undef os_log_create
+#endif
 
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 

@@ -39,6 +39,16 @@ struct os_log_s {
 	const char *category;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern struct os_log_s _os_log_disabled, _os_log_default;
+
 #define OS_LOG_MAGIC			0x584F0001
 #define OS_LOG_DEFAULT_MAGIC	0x584F0002
 #define OS_LOG_DISABLED_MAGIC	0x584FFFFF
+
+#ifdef __cplusplus
+}
+#endif

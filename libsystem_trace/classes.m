@@ -25,6 +25,7 @@
  */
 
 #import <objc/objc.h>
+#import <os/object_private.h>
 #include "os_log_s.h"
 
 #if _OS_OBJECT_OBJC_ARC
