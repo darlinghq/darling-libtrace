@@ -29,7 +29,7 @@
 #include <stdint.h>
 #include <os/base.h>
 
-__XNU_PRIVATE_EXTERN OS_NOINLINE OS_NORETURN
+__XNU_PRIVATE_EXTERN OS_NOINLINE //OS_NORETURN
 void _libtrace_assert_fail(const char *message, ...);
 
 #define libtrace_assert(cond, message, ...) \

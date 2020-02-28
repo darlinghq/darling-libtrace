@@ -26,3 +26,4 @@ add_circular(system_trace FAT
 )
 
 install(TARGETS system_trace DESTINATION libexec/darling/usr/lib/system)
+install(FILES libsystem_trace/org.puredarwin.os_log.asl DESTINATION libexec/darling/etc/asl)
