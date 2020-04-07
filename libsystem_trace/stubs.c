@@ -40,11 +40,6 @@ _os_activity_create(void) {
 }
 
 void
-_os_activity_initiate(void) {
-	_libtrace_assert_fail("_os_activity_initiate: Function unimplemented");
-}
-
-void
 _os_activity_initiate_f(void) {
 	_libtrace_assert_fail("_os_activity_initiate_f: Function unimplemented");
 }
