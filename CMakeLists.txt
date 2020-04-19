@@ -7,6 +7,7 @@ add_definitions(-mmacosx-version-min=10.13)
 set(system_trace_sources
 	libsystem_trace/libtrace_assert.c
 	libsystem_trace/os_log.c
+	libsystem_trace/os_activity.c
 	libsystem_trace/stubs.c
 	libsystem_trace/unpack_buffer.c
 	libsystem_trace/classes.m
