@@ -81,12 +81,13 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 		libtrace_assert(argsSeen < argCount, "Too many format specifiers in os_log string (expected %d)", argCount);
 
 		if (formatString[formatIndex] == '{') {
-			char *closingBracket = strchr(formatString + formatIndex, '}');
-			*closingBracket = '\0';
+			const char *closingBracket = strchr(formatString + formatIndex, '}');
+			size_t brlen = closingBracket - (formatString + formatIndex); // w/o '}'
+			char* attribute = (char*) malloc(brlen + 1);
 
-			char *attribute = strdup(formatString + formatIndex);
-			*closingBracket = '}';
-			formatIndex += strlen(attribute) + 2;
+			strlcpy(attribute, formatString + formatIndex, brlen + 1);
+
+			formatIndex += strlen(attribute) + 1;
 
 			privacy_setting_t privacy = privacy_setting_unset;
 			if (contains_attribute(attribute, "private")) {
