@@ -9,6 +9,7 @@ set(system_trace_sources
 	libsystem_trace/stubs.c
 	libsystem_trace/unpack_buffer.c
 	libsystem_trace/classes.m
+	libsystem_trace/init.c
 	libsbuf/libsbuf.c
 )
 
