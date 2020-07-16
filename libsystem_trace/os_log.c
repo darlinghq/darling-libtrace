@@ -144,3 +144,9 @@ bool os_log_is_enabled(os_log_t log) {
 bool os_log_is_debug_enabled(os_log_t log) {
 	return os_log_type_enabled(log, OS_LOG_TYPE_DEBUG);
 }
+
+#pragma mark New Functions
+
+bool os_log_debug_enabled(os_log_t log) {
+	return os_log_is_debug_enabled(log);
+};
