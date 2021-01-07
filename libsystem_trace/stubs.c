@@ -35,11 +35,6 @@ _os_log_internal(void *dso, os_log_t log, os_log_type_t type, const char *messag
 }
 
 void
-_os_activity_create(void) {
-	_libtrace_assert_fail("_os_activity_create: Function unimplemented");
-}
-
-void
 _os_activity_initiate_f(void) {
 	_libtrace_assert_fail("_os_activity_initiate_f: Function unimplemented");
 }
@@ -474,9 +469,11 @@ os_log_set_fault_callback(void) {
 	_libtrace_assert_fail("os_log_set_fault_callback: Function unimplemented");
 }
 
-void
-os_log_shim_enabled(void) {
+int os_log_shim_enabled(void* return_address) {
 	_libtrace_assert_fail("os_log_shim_enabled: Function unimplemented");
+
+	// not enabled; disables Activity Tracing logging to make libsystem_asl log messages to syslogd
+	return 0;
 }
 
 void

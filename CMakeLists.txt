@@ -1,13 +1,16 @@
 project(libsystem_trace)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libsbuf)
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/libsbuf
+	${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 include(darling_static_lib)
 
 set(system_trace_sources
 	libsystem_trace/libtrace_assert.c
 	libsystem_trace/os_log.c
-	libsystem_trace/os_activity.c
+	libsystem_trace/os_activity.m
 	libsystem_trace/stubs.c
 	libsystem_trace/unpack_buffer.c
 	libsystem_trace/classes.m
