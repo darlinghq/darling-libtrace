@@ -12,7 +12,7 @@ set(system_trace_sources
 	libsystem_trace/os_log.c
 	libsystem_trace/os_activity.m
 	libsystem_trace/stubs.c
-	libsystem_trace/unpack_buffer.c
+	libsystem_trace/unpack_buffer.m
 	libsystem_trace/classes.m
 	libsystem_trace/init.c
 	libsbuf/libsbuf.c
@@ -23,7 +23,7 @@ add_circular(system_trace FAT
 	SOURCES
 		${system_trace_sources}
 	SIBLINGS
-		platform system_kernel system_c system_malloc system_asl system_duct libdispatch_shared system_dyld
+		platform system_kernel system_c system_malloc system_asl system_duct libdispatch_shared system_dyld system_blocks
 	UPWARD
 		objc
 )

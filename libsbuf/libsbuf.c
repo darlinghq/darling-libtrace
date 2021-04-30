@@ -55,7 +55,7 @@ int	sbuf_setpos(struct sbuf *sb, int pos) {
 }
 
 int	sbuf_bcat(struct sbuf *sb, const void *ptr, size_t len) {
-	if ((sb->s_len + len) > sb->s_size) {
+	while ((sb->s_len + len) > sb->s_size) {
 		sb->s_size *= 2;
 		sb->s_buf = realloc(sb->s_buf, sb->s_size);
 	}
@@ -66,7 +66,7 @@ int	sbuf_bcat(struct sbuf *sb, const void *ptr, size_t len) {
 }
 
 int sbuf_bcpy(struct sbuf *sb, const void *ptr, size_t len) {
-	if (len > sb->s_size) {
+	while (len > sb->s_size) {
 		sb->s_size *= 2;
 		sb->s_buf = realloc(sb->s_buf, sb->s_size);
 	}
@@ -100,7 +100,8 @@ int sbuf_printf(struct sbuf *sb, const char *fmt, ...) {
 }
 
 int sbuf_putc(struct sbuf *sb, int c) {
-	return sbuf_bcat(sb, &c, sizeof(int));
+	char the_real_char = (char)c;
+	return sbuf_bcat(sb, &the_real_char, sizeof(char));
 }
 
 int sbuf_trim(struct sbuf *sb) {

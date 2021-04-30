@@ -57,6 +57,15 @@ struct os_log_s _os_log_default = {
 	.category = ""
 };
 
+static asl_object_t get_client() {
+	static asl_object_t client = NULL;
+	static dispatch_once_t token;
+	dispatch_once(&token, ^{
+		client = asl_open(NULL, "org.puredarwin.os_log", 0);
+	});
+	return client;
+};
+
 os_log_t os_log_create(const char *subsystem, const char *category) {
 	libtrace_precondition(subsystem != NULL, "subsystem cannot be NULL");
 	libtrace_precondition(category != NULL, "category cannot be NULL");
@@ -125,7 +134,7 @@ _os_log_impl(void *dso, os_log_t log, os_log_type_t type, const char *format, ui
 	}
 
 	char *decodedBuffer = os_log_decode_buffer(format, buf, size);
-	asl_log(NULL, message, level, "%s", decodedBuffer);
+	asl_log(get_client(), message, level, "%s", decodedBuffer);
 	asl_release(message);
 	free(decodedBuffer);
 	free((void *)buffer_hex);
@@ -144,9 +153,3 @@ bool os_log_is_enabled(os_log_t log) {
 bool os_log_is_debug_enabled(os_log_t log) {
 	return os_log_type_enabled(log, OS_LOG_TYPE_DEBUG);
 }
-
-#pragma mark New Functions
-
-bool os_log_debug_enabled(os_log_t log) {
-	return os_log_is_debug_enabled(log);
-};

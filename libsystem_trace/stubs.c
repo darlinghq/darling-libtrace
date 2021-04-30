@@ -27,6 +27,7 @@
 #include <xpc/xpc.h>
 #include "os_log_s.h"
 #include "libtrace_assert.h"
+#include <os/log_private.h>
 
 void
 _os_log_internal(void *dso, os_log_t log, os_log_type_t type, const char *message, ...)
@@ -59,14 +60,14 @@ _os_activity_stream_entry_encode(void) {
 	_libtrace_assert_fail("_os_activity_stream_entry_encode: Function unimplemented");
 }
 
-void
-_os_log_pack_fill(void) {
+uint8_t* _os_log_pack_fill(os_log_pack_t pack, size_t size, int saved_errno, const void* dso, const char* format) {
 	_libtrace_assert_fail("_os_log_pack_fill: Function unimplemented");
+	return NULL;
 }
 
-void
-_os_log_pack_size(void) {
+size_t _os_log_pack_size(size_t os_log_format_buffer_size) {
 	_libtrace_assert_fail("_os_log_pack_size: Function unimplemented");
+	return 0;
 }
 
 void
@@ -247,11 +248,6 @@ _os_trace_strdup(void) {
 void
 _os_trace_sysprefsdir_path(void) {
 	_libtrace_assert_fail("_os_trace_sysprefsdir_path: Function unimplemented");
-}
-
-void
-_os_trace_with_buffer(void *dso, const char *message, uint8_t type, const void *buffer, size_t buffer_size, os_trace_payload_t payload) {
-	_libtrace_assert_fail("_os_trace_with_buffer: Function unimplemented");
 }
 
 void
@@ -444,8 +440,7 @@ os_log_pack_compose(void) {
 	_libtrace_assert_fail("os_log_pack_compose: Function unimplemented");
 }
 
-void
-os_log_pack_send(void) {
+void os_log_pack_send(os_log_pack_t pack, os_log_t log, os_log_type_t type) {
 	_libtrace_assert_fail("os_log_pack_send: Function unimplemented");
 }
 
@@ -486,8 +481,7 @@ os_log_shim_with_CFString(void) {
 	_libtrace_assert_fail("os_log_shim_with_CFString: Function unimplemented");
 }
 
-void
-os_log_with_args(void) {
+void os_log_with_args(os_log_t oslog, os_log_type_t type, const char *format, va_list args, void *ret_addr) {
 	_libtrace_assert_fail("os_log_with_args: Function unimplemented");
 }
 
@@ -534,6 +528,7 @@ os_trace_clear_task_mode(void) {
 bool
 os_trace_debug_enabled(void) {
 	_libtrace_assert_fail("os_trace_debug_enabled: Function unimplemented");
+	return true;
 }
 
 void
@@ -559,6 +554,7 @@ os_trace_get_type(void) {
 bool
 os_trace_info_enabled(void) {
 	_libtrace_assert_fail("os_trace_info_enabled: Function unimplemented");
+	return true;
 }
 
 void
