@@ -224,14 +224,17 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 			// but we're kinda stuck with it because the input string *does* need to be in the current locale :/
 			// i wonder how Apple handles these in their libtrace...
 
-			wideArgument = (const wchar_t*)pointer;
-			formattedArgumentLength = wcsnrtombs(NULL, &wideArgument, maxLength, 0, &state);
-			libtrace_assert(formattedArgumentLength != (size_t)-1, "wide character string argument cannot be converted to multi-byte string");
-			formattedArgument = calloc(formattedArgumentLength + 1, sizeof(char));
+			/* A NULL wide string prints "(null)" through the guard after this chain, like %s. */
+			if (pointer != 0) {
+				wideArgument = (const wchar_t*)pointer;
+				formattedArgumentLength = wcsnrtombs(NULL, &wideArgument, maxLength, 0, &state);
+				libtrace_assert(formattedArgumentLength != (size_t)-1, "wide character string argument cannot be converted to multi-byte string");
+				formattedArgument = calloc(formattedArgumentLength + 1, sizeof(char));
 
-			memset(&state, 0, sizeof(state));
-			wideArgument = (const wchar_t*)pointer;
-			libtrace_assert(wcsnrtombs(formattedArgument, &wideArgument, maxLength, formattedArgumentLength, &state) == formattedArgumentLength, "wide character string argument cannot be converted to multi-byte string");
+				memset(&state, 0, sizeof(state));
+				wideArgument = (const wchar_t*)pointer;
+				libtrace_assert(wcsnrtombs(formattedArgument, &wideArgument, maxLength, formattedArgumentLength, &state) == formattedArgumentLength, "wide character string argument cannot be converted to multi-byte string");
+			}
 
 			if (privacy == privacy_setting_unset) privacy = privacy_setting_private;
 		} else if (formatString[formatIndex] == 'P') {
@@ -253,16 +256,19 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 			libtrace_assert(readScalar(&buffer[bufferIndex], itemSize, &pointer), "failed to read pointer from buffer");
 			bufferIndex += itemSize;
 
-			struct sbuf *dataHex = sbuf_new_auto();
-			sbuf_putc(dataHex, '<');
+			/* A NULL pointer with a non-zero length prints "(null)" through the guard after this chain. */
+			if (pointer != 0 || length == 0) {
+				struct sbuf *dataHex = sbuf_new_auto();
+				sbuf_putc(dataHex, '<');
 
-			for (uint64_t i = 0; i < length; i++) {
-				sbuf_printf(dataHex, "%02x", ((const char*)pointer)[i]);
+				for (uint64_t i = 0; i < length; i++) {
+					sbuf_printf(dataHex, "%02x", ((const char*)pointer)[i]);
+				}
+
+				sbuf_putc(dataHex, '>');
+				formattedArgument = strdup(sbuf_data(dataHex));
+				sbuf_delete(dataHex);
 			}
-
-			sbuf_putc(dataHex, '>');
-			formattedArgument = strdup(sbuf_data(dataHex));
-			sbuf_delete(dataHex);
 
 			if (privacy == privacy_setting_unset) privacy = privacy_setting_private;
 		} else if (formatString[formatIndex] == '@') {
@@ -278,9 +284,11 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 
 			@autoreleasepool {
 				description = [object description];
+				const char* descriptionUTF8 = description ? description.UTF8String : NULL;
 
-				if (description) {
-					formattedArgument = strdup(description.UTF8String);
+				/* UTF8String is NULL for a string that cannot be converted; strdup(NULL) would crash. */
+				if (descriptionUTF8) {
+					formattedArgument = strdup(descriptionUTF8);
 				} else {
 					asprintf(&formattedArgument, "<%s: %p>", object_getClassName(object), object);
 				}
