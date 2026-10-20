@@ -8,7 +8,13 @@ tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 # a quoted include finds the real os_log_s.h next to the source first, so compile a copy beside the stub one
 cp "$root/libsystem_trace/unpack_buffer.m" "$here/inc/os_log_s.h" "$tmp/"
-clang -w -x objective-c -fobjc-runtime=gnustep-1.9 -DOS_LOG_PRIVACY=0 -I "$here/inc" -I "$root/libsystem_trace" -I "$root/libsbuf" \
+# Apple clang rejects the GNUstep runtime flag (COMDATs on Mach-O); the stubs stand in for the runtime there.
+case $(uname -s) in
+Darwin) objc_runtime="" ;;
+*) objc_runtime="-fobjc-runtime=gnustep-1.9" ;;
+esac
+# shellcheck disable=SC2086
+clang -w -x objective-c $objc_runtime -DOS_LOG_PRIVACY=0 -I "$here/inc" -I "$root/libsystem_trace" -I "$root/libsbuf" \
 	-include "$tmp/os_log_s.h" -c "$tmp/unpack_buffer.m" -o "$tmp/unpack.o"
 clang -w "-D__FBSDID(x)=" -I "$here/inc" -include "$here/inc/os/base.h" -include stdlib.h -include string.h -include ctype.h \
 	-c "$root/libsbuf/libsbuf.c" -o "$tmp/sbuf.o"
