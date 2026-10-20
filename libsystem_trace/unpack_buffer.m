@@ -225,7 +225,9 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 			// i wonder how Apple handles these in their libtrace...
 
 			/* A NULL wide string prints "(null)" through the guard after this chain, like %s. */
-			if (pointer != 0) {
+			if (pointer == 0) {
+				formattedArgumentLength = (size_t)maxLength;
+			} else {
 				wideArgument = (const wchar_t*)pointer;
 				formattedArgumentLength = wcsnrtombs(NULL, &wideArgument, maxLength, 0, &state);
 				libtrace_assert(formattedArgumentLength != (size_t)-1, "wide character string argument cannot be converted to multi-byte string");

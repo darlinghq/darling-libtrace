@@ -51,6 +51,7 @@ int main(void)
 	begin(1); putPointer(2, NULL);                  check("%s NULL", "%s", "(null)", 0);
 	begin(1); putPointer(2, "hi");                  check("%s text", "%s", "hi", 0);
 	begin(1); putPointer(2, NULL);                  check("%S NULL", "%S", "(null)", 0);
+	begin(1); putCount(3); putPointer(2, NULL);     check("%.3S NULL", "%.3S", "(nu", 0);
 	begin(1); putPointer(2, wide);                  check("%S text", "%S", "hi", 0);
 	begin(1); putCount(4); putPointer(3, NULL);     check("%P NULL", "%P", "(null)", 0);
 	begin(1); putCount(0); putPointer(3, NULL);     check("%P empty NULL", "%P", "<>", 0);
