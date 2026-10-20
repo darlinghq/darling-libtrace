@@ -191,9 +191,7 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 			libtrace_assert(readScalar(&buffer[bufferIndex], itemSize, &pointer), "failed to read string pointer from buffer");
 			bufferIndex += itemSize;
 
-			/* A NULL string pointer (os_log("%s", NULL)) must not kill the
-			 * logging process in strnlen() below. Print "(null)" like printf. */
-			formattedArgument = (pointer != 0) ? (char*)pointer : "(null)";
+			formattedArgument = (char*)pointer;
 			formattedArgumentNeedsFree = false;
 			formattedArgumentLength = (size_t)maxLength;
 
@@ -372,7 +370,7 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 
 		++formatIndex;
 
-		/* Never strnlen(NULL): asprintf/strdup above can fail. */
+		/* Never strnlen(NULL): a NULL %s pointer, or a failed asprintf/strdup above, prints "(null)". */
 		if (formattedArgument == NULL) {
 			formattedArgument = "(null)";
 			formattedArgumentNeedsFree = false;
