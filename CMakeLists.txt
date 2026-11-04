@@ -32,3 +32,7 @@ add_darling_static_library(system_trace_static FAT SOURCES $<TARGET_OBJECTS:syst
 
 install(TARGETS system_trace DESTINATION libexec/darling/usr/lib/system)
 install(FILES libsystem_trace/org.puredarwin.os_log.asl DESTINATION libexec/darling/private/etc/asl)
+
+# Host-only decoder test: runs unpack_buffer.m against stub Objective-C headers, no Darling build needed.
+enable_testing()
+add_test(NAME libtrace_host_decode COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/host/run.sh)
