@@ -126,7 +126,9 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 
 		if (formatString[formatIndex] == '{') {
 			// just skip it; the buffer will tell us if it's public or private or unspecified
-			formatString = strchr(formatString + formatIndex, '}') + 1;
+			const char* close = strchr(formatString + formatIndex, '}');
+			libtrace_assert(close != NULL, "unterminated {} privacy annotation in os_log format");
+			formatIndex = (size_t)(close - formatString) + 1;
 		}
 
 		// skip these, for now
@@ -262,7 +264,7 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 				sbuf_putc(dataHex, '<');
 
 				for (uint64_t i = 0; i < length; i++) {
-					sbuf_printf(dataHex, "%02x", ((const char*)pointer)[i]);
+					sbuf_printf(dataHex, "%02x", ((const uint8_t*)pointer)[i]);
 				}
 
 				sbuf_putc(dataHex, '>');
@@ -282,7 +284,8 @@ char *os_log_decode_buffer(const char *formatString, uint8_t *buffer, uint32_t b
 
 			object = (id)integer;
 
-			@autoreleasepool {
+			/* A nil object prints "(null)" through the guard after this chain. */
+			if (object != nil) @autoreleasepool {
 				description = [object description];
 				const char* descriptionUTF8 = description ? description.UTF8String : NULL;
 

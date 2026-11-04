@@ -14,7 +14,8 @@ Darwin) objc_runtime="" ;;
 *) objc_runtime="-fobjc-runtime=gnustep-1.9" ;;
 esac
 # shellcheck disable=SC2086
-clang -w -x objective-c $objc_runtime -DOS_LOG_PRIVACY=0 -I "$here/inc" -I "$root/libsystem_trace" -I "$root/libsbuf" \
+# Darwin x86_64 has a signed char; make the host agree so the %P sign-extension case is observable on arm hosts.
+clang -w -fsigned-char -x objective-c $objc_runtime -DOS_LOG_PRIVACY=0 -I "$here/inc" -I "$root/libsystem_trace" -I "$root/libsbuf" \
 	-include "$tmp/os_log_s.h" -c "$tmp/unpack_buffer.m" -o "$tmp/unpack.o"
 clang -w "-D__FBSDID(x)=" -I "$here/inc" -include "$here/inc/os/base.h" -include stdlib.h -include string.h -include ctype.h \
 	-c "$root/libsbuf/libsbuf.c" -o "$tmp/sbuf.o"

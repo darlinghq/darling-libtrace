@@ -25,7 +25,7 @@ const char *object_getClassName(void *object) { return "Stub"; }
 // -UTF8String of that object answers NULL. Both messages arrive here, told apart by receiver kind.
 void *objc_msgSend(struct stub *receiver, void *sel)
 {
-	return receiver->kind == DESCRIBED ? (void *)&unconvertible : NULL;
+	return receiver && receiver->kind == DESCRIBED ? (void *)&unconvertible : NULL;
 }
 
 void *objc_autoreleasePoolPush(void) { return 0; }

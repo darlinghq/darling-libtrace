@@ -45,6 +45,7 @@ static void check(const char *name, const char *format, const char *want, int pr
 int main(void)
 {
 	static const uint8_t bytes[] = { 1, 2, 3 };
+	static const uint8_t high[] = { 0x80, 0xff, 0x0a };
 	static const wchar_t wide[] = L"hi";
 	struct stub plain = { 1 }, described = { 2 };
 
@@ -60,6 +61,11 @@ int main(void)
 	begin(1); putCount(3); putPointer(3, bytes);    check("%P bytes", "%P", "<010203>", 0);
 	begin(1); putPointer(4, &plain);                check("%@ nil description", "%@", "<Stub: ", 1);
 	begin(1); putPointer(4, &described);            check("%@ unconvertible description", "%@", "<Stub: ", 1);
+	begin(1); putCount(3); putPointer(3, high);     check("%P high bytes", "%P", "<80ff0a>", 0);
+	begin(1); putPointer(4, NULL);                  check("%@ nil object", "%@", "(null)", 0);
+	begin(1); putPointer(2, "hi");                  check("%{public}s", "%{public}s", "hi", 0);
+	begin(1); putPointer(2, "hi");                  check("text then %{public}s", "id=%{public}s!", "id=hi!", 0);
+	begin(2); putPointer(2, "a"); putPointer(2, "b"); check("two annotated", "x %{public}s y %{private}s", "x a y b", 0);
 
 	if (failures)
 		return 1;
