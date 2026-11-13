@@ -13,6 +13,7 @@ set(system_trace_sources
 	libsystem_trace/os_log_pack.c
 	libsystem_trace/os_activity.m
 	libsystem_trace/stubs.c
+	libsystem_trace/os_log_compose.c
 	libsystem_trace/unpack_buffer.m
 	libsystem_trace/classes.m
 	libsystem_trace/init.c
@@ -37,3 +38,4 @@ install(FILES libsystem_trace/org.puredarwin.os_log.asl DESTINATION libexec/darl
 # Host-only decoder test: runs unpack_buffer.m against stub Objective-C headers, no Darling build needed.
 enable_testing()
 add_test(NAME libtrace_host_decode COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/host/run.sh)
+add_test(NAME libtrace_host_compose COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/host/run-compose.sh)

@@ -37,6 +37,14 @@ uint8_t* _os_log_pack_fill(os_log_pack_t pack, size_t size, int saved_errno, con
 OS_EXPORT
 void os_log_pack_send(os_log_pack_t pack, os_log_t log, os_log_type_t type);
 
+// Both return the composed message: `buffer` if it holds it, otherwise malloc'd storage the caller frees, or NULL when
+// nothing could be composed. A caller that passes its own buffer must compare the result against it before free().
+OS_EXPORT
+char *os_log_pack_compose(os_log_pack_t pack, os_log_t log, os_log_type_t type, char *buffer, size_t buffer_size);
+
+OS_EXPORT
+char *os_log_pack_send_and_compose(os_log_pack_t pack, os_log_t log, os_log_type_t type, char *buffer, size_t buffer_size);
+
 // needed for libc
 // not entirely sure how these should be defined
 #define os_log_pack_size(fmt, ...) _os_log_pack_size(sizeof(fmt))

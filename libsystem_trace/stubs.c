@@ -425,18 +425,8 @@ os_log_get_type(void) {
 	_libtrace_assert_fail("os_log_get_type: Function unimplemented");
 }
 
-void
-os_log_pack_compose(void) {
-	_libtrace_assert_fail("os_log_pack_compose: Function unimplemented");
-}
-
 void os_log_pack_send(os_log_pack_t pack, os_log_t log, os_log_type_t type) {
 	_libtrace_assert_fail("os_log_pack_send: Function unimplemented");
-}
-
-void
-os_log_pack_send_and_compose(void) {
-	_libtrace_assert_fail("os_log_pack_send_and_compose: Function unimplemented");
 }
 
 void
