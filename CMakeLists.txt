@@ -10,6 +10,7 @@ include(darling_static_lib)
 set(system_trace_sources
 	libsystem_trace/libtrace_assert.c
 	libsystem_trace/os_log.c
+	libsystem_trace/os_log_pack.c
 	libsystem_trace/os_activity.m
 	libsystem_trace/stubs.c
 	libsystem_trace/unpack_buffer.m

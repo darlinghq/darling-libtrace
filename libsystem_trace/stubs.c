@@ -60,16 +60,6 @@ _os_activity_stream_entry_encode(void) {
 	_libtrace_assert_fail("_os_activity_stream_entry_encode: Function unimplemented");
 }
 
-uint8_t* _os_log_pack_fill(os_log_pack_t pack, size_t size, int saved_errno, const void* dso, const char* format) {
-	_libtrace_assert_fail("_os_log_pack_fill: Function unimplemented");
-	return NULL;
-}
-
-size_t _os_log_pack_size(size_t os_log_format_buffer_size) {
-	_libtrace_assert_fail("_os_log_pack_size: Function unimplemented");
-	return 0;
-}
-
 void
 _os_log_preferences_compute(void) {
 	_libtrace_assert_fail("_os_log_preferences_compute: Function unimplemented");
