@@ -36,7 +36,8 @@ OS_OBJECT_OBJC_CLASS_DECL(os_log);
 
 // os_log_create returns +1 and the caller may release it. Messages' frameworks release once more than they retain
 // (a final release, then a retain: libdispatch aborted with "Resurrection of an object"), so a log object is created
-// once per subsystem and category and is immortal, which tolerates any balance. GUESS, NEEDS-REAL-MAC.
+// once per subsystem and category and is immortal, which tolerates any balance. Observed on macOS 26.7.3: repeated calls with the same pair return the same
+// pointer, and extra releases do not invalidate it. Pinned by tests/host/os-log-create.c.
 struct os_log_node {
 	struct os_log_node *next;
 	os_log_t log;
