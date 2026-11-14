@@ -11,6 +11,7 @@ set(system_trace_sources
 	libsystem_trace/libtrace_assert.c
 	libsystem_trace/os_log.c
 	libsystem_trace/os_log_pack.c
+	libsystem_trace/os_log_create.c
 	libsystem_trace/os_activity.m
 	libsystem_trace/stubs.c
 	libsystem_trace/os_log_compose.c
@@ -39,3 +40,6 @@ install(FILES libsystem_trace/org.puredarwin.os_log.asl DESTINATION libexec/darl
 enable_testing()
 add_test(NAME libtrace_host_decode COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/host/run.sh)
 add_test(NAME libtrace_host_compose COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/host/run-compose.sh)
+
+# Host-only os_log_create test: runs os_log_create.c against stub headers.
+add_test(NAME libtrace_host_os_log_create COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/tests/host/run-create.sh)

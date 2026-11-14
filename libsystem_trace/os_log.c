@@ -37,8 +37,6 @@
 
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-OS_OBJECT_OBJC_CLASS_DECL(os_log);
-
 struct os_log_s _os_log_disabled = {
 	.isa = NULL,
 	.ref_cnt = _OS_OBJECT_GLOBAL_REFCNT,
@@ -65,17 +63,6 @@ static asl_object_t get_client() {
 	});
 	return client;
 };
-
-os_log_t os_log_create(const char *subsystem, const char *category) {
-	libtrace_precondition(subsystem != NULL, "subsystem cannot be NULL");
-	libtrace_precondition(category != NULL, "category cannot be NULL");
-
-	os_log_t value = (os_log_t)_os_object_alloc(&OS_OBJECT_CLASS_SYMBOL(os_log), sizeof(struct os_log_s));
-	value->magic = OS_LOG_MAGIC;
-	value->subsystem = strdup(subsystem);
-	value->category = strdup(category);
-	return value;
-}
 
 bool os_log_type_enabled(os_log_t log, os_log_type_t type) {
 	if (log == NULL) return false;
