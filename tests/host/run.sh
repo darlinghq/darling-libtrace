@@ -24,3 +24,10 @@ clang -w -c "$here/null-arguments.c" -o "$tmp/test.o"
 clang "$tmp/unpack.o" "$tmp/sbuf.o" "$tmp/stubs.o" "$tmp/test.o" -o "$tmp/test"
 ulimit -c 0
 "$tmp/test"
+
+# _os_log_pack_size/_os_log_pack_fill against the real os/log_private.h (tests/host/inc/os/log.h stubs the rest).
+# The stub inc dir comes first so its os/log.h wins; log_private.h is found in the real include dir.
+clang -w -g -fsanitize=address -I "$here/inc" -I "$root/include" -c "$root/libsystem_trace/os_log_pack.c" -o "$tmp/pack.o"
+clang -w -g -fsanitize=address -I "$here/inc" -I "$root/include" -c "$here/os-log-pack.c" -o "$tmp/pack-test.o"
+clang -fsanitize=address "$tmp/pack.o" "$tmp/pack-test.o" -o "$tmp/pack-test"
+"$tmp/pack-test"
