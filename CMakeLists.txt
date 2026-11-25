@@ -14,6 +14,7 @@ set(system_trace_sources
 	libsystem_trace/os_log_create.c
 	libsystem_trace/os_activity.m
 	libsystem_trace/stubs.c
+	libsystem_trace/os_signpost.c
 	libsystem_trace/os_log_compose.c
 	libsystem_trace/unpack_buffer.m
 	libsystem_trace/classes.m
