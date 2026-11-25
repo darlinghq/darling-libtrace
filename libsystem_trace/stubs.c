@@ -466,21 +466,6 @@ void os_log_with_args(os_log_t oslog, os_log_type_t type, const char *format, va
 }
 
 void
-os_signpost_enabled(void) {
-	_libtrace_assert_fail("os_signpost_enabled: Function unimplemented");
-}
-
-void
-os_signpost_id_generate(void) {
-	_libtrace_assert_fail("os_signpost_id_generate: Function unimplemented");
-}
-
-void
-os_signpost_id_make_with_pointer(void) {
-	_libtrace_assert_fail("os_signpost_id_make_with_pointer: Function unimplemented");
-}
-
-void
 os_signpost_set_introspection_hook_4Perf(void) {
 	_libtrace_assert_fail("os_signpost_set_introspection_hook_4Perf: Function unimplemented");
 }
